@@ -6,6 +6,10 @@ class Customer_Type(Enum):
     NORMAL = "normal"
     HARD = "hard"
 
+class Turn:
+    def __init__(self, role, parts):
+        self.role = role
+        self.parts = parts
 
 class Session:
     def __init__(self, description, personality, customer_type, interest_level):
@@ -28,6 +32,11 @@ class Session:
         else:
             if (self.interest_level > 1):
                 self.interest_level -= 1
+    
+    def update_history(self, role, parts):
+        current_turn = Turn(role, [parts])
+        self.history.append(current_turn)
+
 
         
 
