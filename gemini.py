@@ -1,7 +1,10 @@
 from google import genai
 from google.genai import types
-from session import Session, Turn
+from session import Session
+import json
+from dotenv import load_dotenv
 
+load_dotenv()
 client = genai.Client()
 
 def get_response(user_session, user_message):
@@ -20,24 +23,36 @@ def get_response(user_session, user_message):
     For your response, return it in JSON format. Your response JSON should include the content of your simulated response and the updated 
     interest level. You decided what the interest level should be set to based on the interaction, make it as realistic as possible. the interest
     level is bounded between 1 and 5.
+
+    Example JSON output:
+
+    {{
+        "content": "***YOUR RESPONSE***",
+        "interest_level": "***YOUR NEW INTEREST LEVEL***"
+    }}
     """
 
-    # get current turn
-    current_turn = Turn("user", [user_message.content])
+    # get current turn data
+    current_turn = types.Content(role="user", parts=[types.Part(text=user_message.content)])
 
-    # get contents
+    # create a copy of session history
     content = user_session.history.copy()
+
+    # add current turn to history
     content.append(current_turn)
 
-    # format content into gemini form
-    formatted_content = [x.__dict__ for x in content]
 
     # pass data to gemini
     response = client.models.generate_content(
-        model="gemini-3.5-flash",
+        model="gemini-3.1-flash-lite",
         config=types.GenerateContentConfig(
             system_instruction=instruction),
-        contents=formatted_content
+        contents=content
     )
 
-    print(response.text)
+    print(response)
+
+    # clean response
+    output = response.text.replace("```json", "").replace("```", "").strip()
+
+    return json.loads(output)

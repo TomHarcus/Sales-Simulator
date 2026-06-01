@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from session import Session, Customer_Type
 import secrets
+from gemini import get_response
 
 
 app = FastAPI()
@@ -41,4 +42,12 @@ async def get_message(user_message: Message):
     else:
         raise HTTPException(status_code=404, detail="Session not found")
 
-    return user_message.session_id
+    response = get_response(user_session, user_message)
+
+    user_session.update_counter()
+    user_session.update_interest_level(response["interest_level"])
+    user_session.update_history("user", user_message.content)
+    content = response["content"]
+    user_session.update_history("model", content)
+
+    return content

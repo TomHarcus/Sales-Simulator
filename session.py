@@ -1,4 +1,5 @@
 from enum import Enum
+from google.genai import types
 
 # customer difficulty levels
 class Customer_Type(Enum):
@@ -6,10 +7,6 @@ class Customer_Type(Enum):
     NORMAL = "normal"
     HARD = "hard"
 
-class Turn:
-    def __init__(self, role, parts):
-        self.role = role
-        self.parts = parts
 
 class Session:
     def __init__(self, description, personality, customer_type, interest_level):
@@ -24,18 +21,14 @@ class Session:
     def update_counter(self):
         self.counter += 1
 
-    def update_interest_level(self, increase):
-        if (increase):
-            if (self.interest_level < 5):
-                self.interest_level += 1
-            
-        else:
-            if (self.interest_level > 1):
-                self.interest_level -= 1
+    def update_interest_level(self, new_value):
+        if new_value >= 1 and new_value <= 5:
+            self.interest_level = new_value
     
     def update_history(self, role, parts):
-        current_turn = Turn(role, [parts])
-        self.history.append(current_turn)
+        turn = types.Content(role=role, parts=[types.Part(text=parts)])
+       
+        self.history.append(turn)
 
 
         
