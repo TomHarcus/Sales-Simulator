@@ -22,11 +22,16 @@ class Message(BaseModel):
     session_id : str
     content : str
 
+class SessionID(BaseModel):
+    session_id : str
+
 # initialise session endpoint
 @app.post("/start")
 async def start_session(user_session: UserSession):
     # generate unique session id
     user_session_id = secrets.token_hex(16)
+
+
     user_session = Session(user_session.description, user_session.personality, user_session.customer_type, user_session.interest_level)
 
     # connect session id to user session class
@@ -51,3 +56,15 @@ async def get_message(user_message: Message):
     user_session.update_history("model", content)
 
     return content
+
+
+@app.post("/end")
+async def end_session(user_session_id : SessionID):
+    # remove users session from dictionary
+    try:
+        del sessions_dict[user_session_id.session_id]
+        return "Session ended"
+    
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
