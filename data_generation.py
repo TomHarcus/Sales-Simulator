@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import random
 import csv
 import json
+import time
 
 load_dotenv()
 client = genai.Client()
@@ -59,6 +60,7 @@ with open("sales_convo_data.csv", "w", newline="") as data_file:
             data_file.flush()
             
             print(f"completed sample {i}")
+            time.sleep(2)
 
         except json.JSONDecodeError:
             print(f"json error on sample {i}")
