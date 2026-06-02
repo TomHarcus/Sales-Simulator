@@ -32,6 +32,8 @@ with open("sales_convo_data.csv", "w", newline="") as data_file:
             words and incomplete sentences. Also do not make the category too obvious, real human language is ambiguous, so vary the obviousness 
             of your behaviour. Don't use unconventional words that are rarely used during natural conversation, keep it as human like as possible.
 
+            Responses should be between 2-4 sentences, not to long and not to short. All similar length.
+
             Add a field to your JSON output called ***Context turns***: a list of 1-2 short prospect messages that naturally lead into the 
             salesperson's (your) response. The context turns should create a realistic setup that makes the category behaviour make sense in 
             context.
