@@ -135,56 +135,67 @@ use 1. Do not pad with an unnecessary second turn."""
 SAMPLES_PER_CATEGORY = 600
 OUTPUT_FILE = "sales_convo_data.csv"
 
-# create random category order with 600 of each category
-jobs = []
-for category in CATEGORIES:
-    for _ in range(SAMPLES_PER_CATEGORY):
-        jobs.append((category, random.choice(TOPICS)))
+def generate_data():
+  # create random category order with 600 of each category
+  jobs = []
+  for category in CATEGORIES:
+      for _ in range(SAMPLES_PER_CATEGORY):
+          jobs.append((category, random.choice(TOPICS)))
 
-random.shuffle(jobs)
+  random.shuffle(jobs)
 
-# check if file exists
-start_index = 0
-if os.path.exists(OUTPUT_FILE):
-    with open(OUTPUT_FILE, "r") as f:
-        start_index = sum(1 for _ in f) - 1
-    print(f"Resuming from index {start_index}")
+  # check if file exists
+  start_index = 0
+  if os.path.exists(OUTPUT_FILE):
+      with open(OUTPUT_FILE, "r") as f:
+          start_index = sum(1 for _ in f) - 1
+      print(f"Resuming from index {start_index}")
 
-with open(OUTPUT_FILE, "a", newline="", encoding="utf-8") as data_file:
-    fieldnames = ["context_turns", "response"]
-    writer = csv.DictWriter(data_file, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+  with open(OUTPUT_FILE, "a", newline="", encoding="utf-8") as data_file:
+      fieldnames = ["context_turns", "response"]
+      writer = csv.DictWriter(data_file, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
 
-    if start_index == 0:
-        writer.writeheader()
+      if start_index == 0:
+          writer.writeheader()
 
-    # fill in the current category and topic into the prompt
-    for i, (category, topic) in enumerate(jobs[start_index:], start=start_index):
-        prompt = build_prompt(category, topic)
+      # fill in the current category and topic into the prompt
+      for i, (category, topic) in enumerate(jobs[start_index:], start=start_index):
+          prompt = build_prompt(category, topic)
 
-        # pass to the LLM
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.0-flash-lite",
-                contents=prompt,
-            )
+          # pass to the LLM
+          try:
+              response = client.models.generate_content(
+                  model="gemini-3.1-flash-lite",
+                  contents=prompt,
+              )
 
-            output = response.text.replace("```json", "").replace("```", "").strip()
-            parsed_output = json.loads(output)
+              output = response.text.replace("```json", "").replace("```", "").strip()
+              parsed_output = json.loads(output)
 
-            writer.writerow({
-                "context_turns": json.dumps(parsed_output["context_turns"]),
-                "response": parsed_output["response"]
-            })
-            data_file.flush()
+              writer.writerow({
+                  "context_turns": json.dumps(parsed_output["context_turns"]),
+                  "response": parsed_output["response"]
+              })
+              data_file.flush()
 
-            print(f"Completed sample {i}/{len(jobs)}")
-            time.sleep(4)
+              print(f"Completed sample {i}/{len(jobs)}")
+              time.sleep(4)
 
-        except json.JSONDecodeError:
-            print(f"JSON error on sample {i}, skipping")
-            time.sleep(4)
+          except json.JSONDecodeError:
+              print(f"JSON error on sample {i}, skipping")
+              time.sleep(4)
 
-        except Exception as e:
-            print(f"Error at sample {i}: {e}")
-            time.sleep(10)
-    
+          except Exception as e:
+              print(f"Error at sample {i}: {e}")
+              time.sleep(10)
+
+import pandas as pd
+import numpy as np
+
+def add_label():
+    df = pd.read_csv(OUTPUT_FILE)
+
+    df.insert(0, "Label", np.nan)
+
+    df.to_csv(OUTPUT_FILE, index=False)
+
