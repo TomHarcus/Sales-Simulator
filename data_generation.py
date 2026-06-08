@@ -195,7 +195,13 @@ import numpy as np
 def add_label():
     df = pd.read_csv(OUTPUT_FILE)
 
-    df.insert(0, "Label", np.nan)
+    df.insert(0, "label", np.nan)
 
     df.to_csv(OUTPUT_FILE, index=False)
+
+def check_counts():
+    df = pd.read_csv("sales_convo_data_labelled.csv")
+    print(df["label"].value_counts())
+
+check_counts()
 
