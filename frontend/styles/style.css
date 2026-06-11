@@ -1,0 +1,11 @@
+.start_state {
+    display: inline;
+}
+
+.active_session {
+    display: none;
+}
+
+.finish_session {
+    display: none;
+}
