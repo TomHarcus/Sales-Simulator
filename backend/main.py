@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from backend.session import Session, Customer_Type
+from session import Session, Customer_Type
 import secrets
-from backend.gemini import get_response
+from gemini import get_response
 from model import classify, tokenize
 
 
@@ -48,6 +48,11 @@ async def get_message(user_message: Message):
         user_session = sessions_dict[user_message.session_id]
     else:
         raise HTTPException(status_code=404, detail="Session not found")
+    
+    classification = "N/A"
+    if user_session.get_counter() > 0:
+        model_input = tokenize(user_session.get_previous_message(), user_message.content)
+        classification = classify(model_input)
 
     response = get_response(user_session, user_message)
 
@@ -57,7 +62,8 @@ async def get_message(user_message: Message):
     content = response["content"]
     user_session.update_history("model", content)
 
-    return content
+
+    return {"content": content, "classification": classification}
 
 
 @app.post("/end")

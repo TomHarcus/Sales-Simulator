@@ -21,6 +21,9 @@ class Session:
     def update_counter(self):
         self.counter += 1
 
+    def get_counter(self):
+        return self.counter
+
     def update_interest_level(self, new_value):
         if new_value >= 1 and new_value <= 5:
             self.interest_level = new_value
@@ -29,6 +32,9 @@ class Session:
         turn = types.Content(role=role, parts=[types.Part(text=parts)])
        
         self.history.append(turn)
+
+    def get_previous_message(self):
+        return self.history[-1].parts[0].text
 
 
         
