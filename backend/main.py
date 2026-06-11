@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from backend.session import Session, Customer_Type
 import secrets
 from backend.gemini import get_response
+from model import classify
 
 
 app = FastAPI()
@@ -68,4 +69,8 @@ async def end_session(user_session_id : SessionID):
     
     except KeyError:
         raise HTTPException(status_code=404, detail="Session not found")
+    
+@app.post("/model")
+async def get_classification(user_message: Message):
+    pass
     
