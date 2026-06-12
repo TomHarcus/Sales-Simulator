@@ -14,12 +14,24 @@
 
 body {
     background-color: var(--bg);
-    min-height: 75vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: "JetBrains Mono";
     
 }
+
+input, select, button, textarea {
+    font-family: "JetBrains Mono";
+}
+
+label {
+    display: block;
+    color: var(--text-muted)
+    
+}
+
 .start_state {
     background-color: var(--panel);
     display: flex;
@@ -38,6 +50,31 @@ input[type=text] {
     border: none;
     display: inline-block;
     border-radius: 4px;
+}
+
+select {
+    background-color: var(--bg);
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 12px;
+
+}
+
+input[type=range] {
+    width: 100%;
+    accent-color: var(--accent);
+}
+
+
+input[type=submit] {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 16px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
 }
 
 .active_session {
