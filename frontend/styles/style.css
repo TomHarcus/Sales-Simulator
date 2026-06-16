@@ -79,6 +79,7 @@ input[type=submit] {
 
 .active_session {
     display: flex;
+    height: 100vh;
 }
 
 .finish_session {
@@ -95,6 +96,8 @@ input[type=submit] {
     width: 65%;
     flex: 2;
     padding: 24px;
+    display: flex;
+    flex-direction: column;
 }
 
 .right {
@@ -113,13 +116,13 @@ input[type=submit] {
     padding: 12px;
     background-color: var(--panel);
     border: var(--text-muted);
+    flex: 1;
 }
 
 .message {
     max-width: 70%;
     padding: 8px 12px;
     border-radius: 12px;
-    flex: 1;
 }
 
 .message.prospect {
