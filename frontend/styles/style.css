@@ -80,12 +80,18 @@ input[type=submit] {
 }
 
 .active_session {
-    display: flex;
+    display: none;
     height: 100vh;
 }
 
 .finish_session {
-    display: none;
+    display: flex;
+    background-color: var(--panel);
+    flex-direction: column;
+    max-width: 400px;
+    padding: 24px;
+    border-radius: 24px;
+    gap: 12px;
 }
 
 .parent {
@@ -206,4 +212,30 @@ input[type=submit] {
 .dot.active {
     background-color: var(--accent);
     opacity: 1;
+}
+
+.score-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--bg);
+}
+
+.score-label {
+    color: var(--text-muted);
+}
+
+.score-count {
+    color: var(--text);
+    font-weight: bold;
+}
+
+.finish_session button {
+    background-color: var(--accent);
+    color: var(--text);
+    border: none;
+    border-radius: 6px;
+    padding: 12px 20px;
+    cursor: pointer;
+    width: 100%;
 }
