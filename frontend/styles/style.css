@@ -35,7 +35,7 @@ label {
 
 .start_state {
     background-color: var(--panel);
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -85,7 +85,7 @@ input[type=submit] {
 }
 
 .finish_session {
-    display: flex;
+    display: none;
     background-color: var(--panel);
     flex-direction: column;
     max-width: 400px;
