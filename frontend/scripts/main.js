@@ -1,4 +1,5 @@
 document.getElementById("start_form").addEventListener("submit", validateStart);
+let user_session_id = null;
 
 async function validateStart(event) {
     event.preventDefault();
@@ -31,8 +32,8 @@ async function validateStart(event) {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const result = await response.json();
-        console.log(result);
+        user_session_id = await response.json();
+        console.log(user_session_id);
 
     } catch (error) {
         console.log(error.message);
