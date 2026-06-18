@@ -145,7 +145,35 @@ async function sendMessage(event) {
         console.log(error.message);
     }
 
-    
+}
+
+document.getElementById("end_session").addEventListener("click", endSession);
+
+async function endSession(event) {
+    event.preventDefault();
+
+    const url = "http://127.0.0.1:8000/end"
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({session_id: user_session_id})
+        })
+
+    if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+    }
+
+    document.getElementsByClassName("active_session")[0].style.display="none";
+    document.getElementsByClassName("finish_session")[0].style.display="flex";
+
+    } catch (error) {
+        console.log(error.message);
+    }
+    console.log("session ended");
 }
 
 
