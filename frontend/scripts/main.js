@@ -78,6 +78,7 @@ async function sendMessage(event) {
     let user_message = document.getElementById("user_message").value;
     console.log(user_message);
     addMessage(user_message, "user");
+    document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
 
 
     // clear message text field
@@ -107,6 +108,8 @@ async function sendMessage(event) {
         
         addMessage(customer_response["content"], "prospect");
         console.log(customer_response);
+
+        document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
         
 
     } catch (error) {
