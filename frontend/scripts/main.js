@@ -46,6 +46,8 @@ async function validateStart(event) {
         document.getElementsByClassName("start_state")[0].style.display="none";
         document.getElementsByClassName("active_session")[0].style.display="flex";
 
+        updateInterestLevel(session_interest_level);
+
     } catch (error) {
         console.log(error.message);
     }
@@ -61,6 +63,19 @@ function addMessage(content, type) {
 
 }
 
+function updateInterestLevel(current_interest_level) {
+    interest_level = document.getElementsByClassName("interest-dots")[0].children;
+
+    for (let i = 0; i < interest_level.length; i++) {
+        if (i < current_interest_level) {
+            interest_level[i].classList.add("active");
+        } else {
+            interest_level[i].classList.remove("active");
+        }
+    }
+   
+}
+
 
 // two ways to send message: click send button or press enter key
 document.getElementById("send_button").addEventListener("click", sendMessage);
@@ -72,13 +87,20 @@ input.addEventListener("keypress", function(event) {
     }
 })
 
+const classification_map = {
+    "OH": "Objection handling",
+    "AN": "Anchoring",
+    "FD": "Feature dumping",
+    "WC": "Weak concession",
+    "N/A": "N/A"
+};
+
 // send message 
 async function sendMessage(event) {
     event.preventDefault();
     let user_message = document.getElementById("user_message").value;
     console.log(user_message);
     addMessage(user_message, "user");
-    document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
 
 
     // clear message text field
@@ -113,18 +135,9 @@ async function sendMessage(event) {
 
         let classification = document.getElementsByClassName("info-value");
 
-        if (customer_response["classification"]=="OH") {
-            classification[0].innerHTML = "Objection handling";
-        }
-        if (customer_response["classification"]=="FD") {
-            classification[0].innerHTML = "Feature dumping";
-        }
-        if (customer_response["classification"]=="WC") {
-            classification[0].innerHTML = "Weak concession";
-        }
-        if (customer_response["classification"]=="AN") {
-            classification[0].innerHTML = "Anchoring";
-        }
+        classification[0].textContent = classification_map[customer_response["classification"]];
+
+        updateInterestLevel(customer_response["interest_level"]);
         
         
 

@@ -75,7 +75,7 @@ async def get_message(user_message: Message):
     user_session.update_history("model", content)
 
 
-    return {"content": content, "classification": classification}
+    return {"content": content, "classification": classification, "interest_level": user_session.interest_level}
 
 
 @app.post("/end")
