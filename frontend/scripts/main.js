@@ -29,9 +29,9 @@ async function validateStart(event) {
         const response = await fetch(url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(request),
+        body: JSON.stringify(request)
         });
 
         if (!response.ok) {
@@ -52,7 +52,7 @@ async function validateStart(event) {
 
 }
 
-
+// two ways to send message: click send button or press enter key
 document.getElementById("send_button").addEventListener("click", sendMessage);
 
 let input = document.getElementById("user_message")
@@ -61,12 +61,44 @@ input.addEventListener("keypress", function(event) {
         sendMessage(event);
     }
 })
+
+// send message 
 async function sendMessage(event) {
     event.preventDefault();
     let user_message = document.getElementById("user_message").value;
     console.log(user_message);
 
+    // clear message text field
     document.getElementById("user_message").value = "";
+
+    const request = {
+        session_id: user_session_id,
+        content: user_message
+    };
+
+    const url = "http://127.0.0.1:8000/message";
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(request)
+        })
+
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        let customer_response = await response.json();
+        console.log(customer_response["content"]);
+
+    } catch (error) {
+        console.log(error.message);
+    }
+
+    
 }
 
 
