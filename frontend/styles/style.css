@@ -69,7 +69,7 @@ input[type=range] {
 }
 
 
-input[type=submit] {
+.start_state input[type=submit] {
     background-color: var(--accent);
     color: var(--text);
     border: none;
@@ -78,6 +78,15 @@ input[type=submit] {
     cursor: pointer;
     display: block;
     width: 100%;
+}
+
+.active_session input[type=submit] {
+    background-color: var(--accent);
+    color: var(--text);
+    border: none;
+    border-radius: 6px;
+    padding: 16px;
+    cursor: pointer;
 }
 
 .active_session {
@@ -118,9 +127,10 @@ input[type=submit] {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 16px;
+    padding-top: 40px;
 }
 
 .messages {

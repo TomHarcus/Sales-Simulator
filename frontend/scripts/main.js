@@ -110,6 +110,22 @@ async function sendMessage(event) {
         console.log(customer_response);
 
         document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
+
+        let classification = document.getElementsByClassName("info-value");
+
+        if (customer_response["classification"]=="OH") {
+            classification[0].innerHTML = "Objection handling";
+        }
+        if (customer_response["classification"]=="FD") {
+            classification[0].innerHTML = "Feature dumping";
+        }
+        if (customer_response["classification"]=="WC") {
+            classification[0].innerHTML = "Weak concession";
+        }
+        if (customer_response["classification"]=="AN") {
+            classification[0].innerHTML = "Anchoring";
+        }
+        
         
 
     } catch (error) {
