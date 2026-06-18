@@ -4,9 +4,22 @@ from session import Session, Customer_Type
 import secrets
 from gemini import get_response
 from model import classify, tokenize
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5500"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # all active sessions
 sessions_dict = {}
