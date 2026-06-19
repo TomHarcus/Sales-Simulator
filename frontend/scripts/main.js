@@ -127,6 +127,9 @@ async function sendMessage(event) {
     // clear message text field
     document.getElementById("user_message").value = "";
 
+    document.getElementById("user_message").disabled = true;
+    document.getElementById("send_button").disabled = true;
+
     const request = {
         session_id: user_session_id,
         content: user_message
@@ -152,6 +155,9 @@ async function sendMessage(event) {
         addMessage(customer_response["content"], "prospect");
         console.log(customer_response);
 
+        document.getElementById("user_message").disabled = false;
+        document.getElementById("send_button").disabled = false;
+
         document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
 
         let classification = document.getElementsByClassName("info-value");
@@ -164,6 +170,8 @@ async function sendMessage(event) {
 
     } catch (error) {
         console.log(error.message);
+        document.getElementById("user_message").disabled = false;
+        document.getElementById("send_button").disabled = false;
     }
 
 }
