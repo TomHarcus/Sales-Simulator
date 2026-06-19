@@ -176,4 +176,15 @@ async function endSession(event) {
     console.log("session ended");
 }
 
+document.getElementById("restart_button").addEventListener("click", startNewSession);
+
+function startNewSession(event) {
+    document.getElementsByClassName("finish_session")[0].style.display="none";
+    document.getElementsByClassName("start_state")[0].style.display="flex";
+    user_session_id = null;
+
+    let classification = document.getElementsByClassName("info-value");
+    classification[0].textContent = classification_map["N/A"];
+}
+
 
