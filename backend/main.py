@@ -61,7 +61,8 @@ async def get_message(user_message: Message):
     else:
         raise HTTPException(status_code=404, detail="Session not found")
     
-
+    threshold = 0.5
+    low_confidence = False
     distribution = None
     classification = ("N/A", 0)
     if user_session.get_counter() > 0:
@@ -75,6 +76,10 @@ async def get_message(user_message: Message):
 
         classification = max(list_distribution, key=lambda x: x[1])
 
+        if classification[1] < threshold:
+            low_confidence = True
+       
+
 
     response = get_response(user_session, user_message)
 
@@ -85,7 +90,7 @@ async def get_message(user_message: Message):
     user_session.update_history("model", content)
 
 
-    return {"content": content, "distribution": distribution, "classification": classification[0], "interest_level": user_session.interest_level}
+    return {"content": content, "distribution": distribution, "classification": classification[0], "low_confidence": low_confidence, "interest_level": user_session.interest_level}
 
 
 @app.post("/end")
