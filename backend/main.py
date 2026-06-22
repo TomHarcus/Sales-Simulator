@@ -61,7 +61,7 @@ async def get_message(user_message: Message):
     else:
         raise HTTPException(status_code=404, detail="Session not found")
     
-    threshold = 0.5
+    threshold = 0.6
     low_confidence = False
     distribution = None
     classification = ("N/A", 0)
