@@ -13,6 +13,8 @@
     --dot-width: 10px;
     --dot-color: #E0E1DD;
     --speed: 1.5s;
+    --winning-bar: #09AC06;
+    --warning: #f59e0b;
 }
 
 body {
@@ -221,16 +223,22 @@ input[type=range] {
 
 .progress_bar {
     height: 20px;
-    background-color: var(--text-muted);
+    background-color: var(--accent);
     border-radius: 4px;
     display: inline-block;
 }
 
 .winning_bar {
     height: 20px;
-    background-color: var(--text);
+    background-color: var(--winning-bar);
     border-radius: 4px;
     display: inline-block;
+}
+
+.ood_warning {
+    color: var(--warning);
+    visibility: hidden;
+    font-size: 12px;
 }
 
 .info-label {

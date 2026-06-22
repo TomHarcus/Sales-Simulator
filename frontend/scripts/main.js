@@ -50,6 +50,8 @@ async function validateStart(event) {
         document.getElementsByClassName("start_state")[0].style.display="none";
         document.getElementsByClassName("active_session")[0].style.display="flex";
 
+        
+
         updateInterestLevel(session_interest_level);
 
     } catch (error) {
@@ -178,6 +180,9 @@ async function sendMessage(event) {
     document.getElementById("user_message").disabled = true;
     document.getElementById("send_button").disabled = true;
 
+    document.getElementsByClassName("ood_warning")[0].style.visibility="hidden";
+
+
     const request = {
         session_id: user_session_id,
         content: user_message
@@ -214,6 +219,10 @@ async function sendMessage(event) {
         if (customer_response["classification"] !== "N/A") {
 
             updateDistribution(customer_response["distribution"], customer_response["classification"]);
+        }
+
+        if (customer_response["low_confidence"] === true) {
+            document.getElementsByClassName("ood_warning")[0].style.visibility="visible";
         }
 
         updateInterestLevel(customer_response["interest_level"]);
