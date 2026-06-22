@@ -92,20 +92,41 @@ function addMessage(content, type) {
 }
 
 function updateDistribution(distribution) {
-    console.log(distribution);
+    document.querySelectorAll(".progress_bar").forEach(p => p.remove());
+    document.querySelectorAll(".span_distribution_label").forEach(p => p.remove());
+    let old_label = document.querySelector(".distribution_label");
+    if (old_label) {
+        old_label.remove();
+    }
+
     let current_distribution = document.createElement("div");
     current_distribution.classList.add("distribution_label")
     current_distribution.textContent = "Class Distribution";
     
     document.getElementsByClassName("information")[0].insertBefore(current_distribution, document.querySelector(".info-label"));
     for (const key in distribution) {
-        let current_class = document.createElement("p");
-        current_class.classList.add("distribution_value");
-        current_class.textContent = `${key}: ${distribution[key]*100}%`;
-        document.getElementsByClassName("information")[0].insertBefore(current_class, document.querySelector(".info-label"));
-    }
+        let bar = document.createElement("div");
+        bar.classList.add("progress_bar");
+        let width = 0;
+        let frame = () => {
+            if (width >= distribution[key]*100) {
+            clearInterval(id);
+        } else {
+            width ++;
+            bar.style.width = width + "%";
+        }
+        }
 
-    
+        if (distribution[key] === 0) {
+            bar.style.width = "0%";
+        }
+        let label = document.createElement("span");
+        label.classList.add("span_distribution_label");
+        label.textContent = `${key}: ${(distribution[key]*100)}%`;
+        let id = setInterval(frame, 5);
+        document.getElementsByClassName("information")[0].insertBefore(label, document.querySelector(".info-label"));
+        document.getElementsByClassName("information")[0].insertBefore(bar, document.querySelector(".info-label"));    
+    }
 }
 
 function updateInterestLevel(current_interest_level) {
@@ -183,6 +204,7 @@ async function sendMessage(event) {
         classification[0].textContent = classification_map[customer_response["classification"]];
 
         if (customer_response["classification"] !== "N/A") {
+
             updateDistribution(customer_response["distribution"]);
         }
 
