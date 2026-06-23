@@ -406,17 +406,13 @@ function interestLineGraph(interest_trajectory) {
     const paddingLeft = 30;
     const paddingBottom = 50;
     const paddingTop = 30;
+    const paddingRight = 50;
     
 
     const xScale = i => (i / (interest_trajectory.length - 1)) * svgWidth;
     const yScale = v => svgHeight - ((v-1)/4) * svgHeight;
 
     const pointsString = points.map(([i,v]) => `${xScale(i)}, ${yScale(v)}`).join(" ");
-
-    polyline.setAttribute("points", pointsString);
-    polyline.setAttribute("fill", "none");
-    polyline.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
-    polyline.setAttribute("stroke-width", "3");
 
     const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
     yAxis.setAttribute("x1", 0);
@@ -426,6 +422,33 @@ function interestLineGraph(interest_trajectory) {
     yAxis.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
     yAxis.setAttribute("stroke-width", "3");
 
+    const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    xAxis.setAttribute("x1", 0);
+    xAxis.setAttribute("y1", svgHeight);
+    xAxis.setAttribute("x2", svgWidth);
+    xAxis.setAttribute("y2", svgHeight);
+    xAxis.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
+    xAxis.setAttribute("stroke-width", "3");
+
+    svg.appendChild(yAxis);
+    svg.appendChild(xAxis);
+
+    polyline.setAttribute("points", pointsString);
+    polyline.setAttribute("fill", "none");
+    polyline.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
+    polyline.setAttribute("stroke-width", "3");
+
+    for (let i = 0; i < points.length; i++) {
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", xScale(points[i][0]));
+        circle.setAttribute("cy", yScale(points[i][1]));
+        circle.setAttribute("r", 4);
+        circle.setAttribute("fill", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
+        svg.appendChild(circle);
+    }
+
+    
+
     const yLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     yLabel.setAttribute("transform", "rotate(-90)");
     yLabel.setAttribute("x", -svgHeight/2-24);
@@ -434,13 +457,7 @@ function interestLineGraph(interest_trajectory) {
     yLabel.setAttribute("font-size", "12");
     yLabel.textContent = "Interest";
 
-    const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    xAxis.setAttribute("x1", 0);
-    xAxis.setAttribute("y1", svgHeight);
-    xAxis.setAttribute("x2", svgWidth);
-    xAxis.setAttribute("y2", svgHeight);
-    xAxis.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
-    xAxis.setAttribute("stroke-width", "3");
+    
 
     const xLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     xLabel.setAttribute("x", svgWidth/2-44);
@@ -450,13 +467,11 @@ function interestLineGraph(interest_trajectory) {
     xLabel.textContent = "Turns";
     
 
-    svg.setAttribute("viewBox", `${-paddingLeft} ${-paddingTop} ${svgWidth} ${svgHeight+paddingBottom}`);
+    svg.setAttribute("viewBox", `${-paddingLeft} ${-paddingTop} ${svgWidth+paddingRight} ${svgHeight+paddingBottom}`);
     
 
     svg.appendChild(polyline);
-    svg.appendChild(yAxis);
     svg.appendChild(yLabel);
-    svg.appendChild(xAxis);
     svg.appendChild(xLabel);
 
     document.getElementsByClassName("finish_right")[0].appendChild(svg);
