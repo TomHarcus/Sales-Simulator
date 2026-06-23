@@ -109,6 +109,9 @@ input[type=range] {
     border-radius: 24px;
     gap: 12px;
     align-self: center;
+    overflow: hidden;
+    width: 50vw;
+    min-height:50vh;
 }
 
 .finish_title {

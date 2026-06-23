@@ -403,6 +403,11 @@ function interestLineGraph(interest_trajectory) {
     const svgWidth = container.clientWidth;
     const svgHeight = container.clientHeight/2;
 
+    const paddingLeft = 30;
+    const paddingBottom = 50;
+    const paddingTop = 30;
+    
+
     const xScale = i => (i / (interest_trajectory.length - 1)) * svgWidth;
     const yScale = v => svgHeight - ((v-1)/4) * svgHeight;
 
@@ -413,8 +418,47 @@ function interestLineGraph(interest_trajectory) {
     polyline.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
     polyline.setAttribute("stroke-width", "3");
 
-    svg.setAttribute("viewbox", `0 0 ${svgWidth} ${svgHeight}`);
+    const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    yAxis.setAttribute("x1", 0);
+    yAxis.setAttribute("y1", 0);
+    yAxis.setAttribute("x2", 0);
+    yAxis.setAttribute("y2", svgHeight);
+    yAxis.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
+    yAxis.setAttribute("stroke-width", "3");
+
+    const yLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    yLabel.setAttribute("transform", "rotate(-90)");
+    yLabel.setAttribute("x", -svgHeight/2-24);
+    yLabel.setAttribute("y", -8);
+    yLabel.setAttribute("fill", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
+    yLabel.setAttribute("font-size", "12");
+    yLabel.textContent = "Interest";
+
+    const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    xAxis.setAttribute("x1", 0);
+    xAxis.setAttribute("y1", svgHeight);
+    xAxis.setAttribute("x2", svgWidth);
+    xAxis.setAttribute("y2", svgHeight);
+    xAxis.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
+    xAxis.setAttribute("stroke-width", "3");
+
+    const xLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    xLabel.setAttribute("x", svgWidth/2-44);
+    xLabel.setAttribute("y", svgHeight+16);
+    xLabel.setAttribute("fill", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
+    xLabel.setAttribute("font-size", "12");
+    xLabel.textContent = "Turns";
+    
+
+    svg.setAttribute("viewBox", `${-paddingLeft} ${-paddingTop} ${svgWidth} ${svgHeight+paddingBottom}`);
+    
+
     svg.appendChild(polyline);
+    svg.appendChild(yAxis);
+    svg.appendChild(yLabel);
+    svg.appendChild(xAxis);
+    svg.appendChild(xLabel);
+
     document.getElementsByClassName("finish_right")[0].appendChild(svg);
 }
 
@@ -483,6 +527,9 @@ function startNewSession(event) {
 
     let classification = document.getElementsByClassName("info-value");
     classification[0].textContent = classification_map["N/A"];
+    
+    document.getElementsByClassName("finish_left")[0].innerHTML = "";
+    document.getElementsByClassName("finish_right")[0].innerHTML = "";
 }
 
 
