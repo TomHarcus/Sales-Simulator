@@ -542,6 +542,9 @@ function startNewSession(event) {
 
     let classification = document.getElementsByClassName("info-value");
     classification[0].textContent = classification_map["N/A"];
+
+    document.getElementsByClassName("current_objection")[0].textContent = objection_map[null];
+    document.getElementsByClassName("number_turns")[0].textContent = 0;
     
     document.getElementsByClassName("finish_left")[0].innerHTML = "";
     document.getElementsByClassName("finish_right")[0].innerHTML = "";
