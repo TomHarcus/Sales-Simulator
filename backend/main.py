@@ -116,11 +116,16 @@ async def end_session(user_session_id : SessionID):
         difficulty = user_session.customer_type
 
         interest_trajectory = user_session.interest_trajectory
-        final_interest_level = user_session.interest_trajectory[-1]
 
         classification_history = user_session.classification_history
-        classification_counter = Counter(classification_history)
-        most_frequent_class = classification_counter.most_common(0)[0]
+        if (len(classification_history) > 0 and len(interest_trajectory) > 0):
+            classification_counter = Counter(classification_history)
+            most_frequent_class = classification_counter.most_common(1)[0]
+
+            final_interest_level = user_session.interest_trajectory[-1]
+        else:
+            most_frequent_class = ("N/A", 0)
+            final_interest_level = "N/A"
 
         low_confidence_count = user_session.low_confidence_count
 

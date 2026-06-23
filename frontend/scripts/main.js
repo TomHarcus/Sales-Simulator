@@ -285,6 +285,38 @@ async function sendMessage(event) {
 
 }
 
+
+function populateLeft(description, personality, difficulty, turns, final_interest, most_frequent_class, low_confidence) {
+
+    const fields = [
+        ["Description", description],
+        ["Personality", personality],
+        ["Difficulty", difficulty],
+        ["Total turns", turns],
+        ["Final interest", final_interest],
+        ["Dominant behaviour", most_frequent_class[0]],
+        ["Low confidence inputs", low_confidence]
+    ];
+
+    const container = document.getElementsByClassName("finish_left")[0];
+
+    fields.forEach(([label, value]) => {
+        let l = document.createElement("p");
+        let v = document.createElement("p");
+        l.classList.add("finish_label")
+        v.classList.add("finish_text");
+        l.textContent = `${label}`;
+        v.textContent = value;
+        container.appendChild(l);
+        container.appendChild(v);
+    });
+
+}
+
+function populateRight() {
+
+}
+
 document.getElementById("end_session").addEventListener("click", endSession);
 
 async function endSession(event) {
@@ -305,8 +337,15 @@ async function endSession(event) {
         throw new Error(`Response status: ${response.status}`);
     }
 
+    let backend_response = await response.json();
+    console.log(backend_response);
+
     document.getElementsByClassName("active_session")[0].style.display="none";
     document.getElementsByClassName("finish_session")[0].style.display="flex";
+
+
+    populateLeft(backend_response["description"], backend_response["personality"], backend_response["difficulty"], backend_response["total_turns"], backend_response["final_interest_level"], backend_response["most_frequent_class"],backend_response["low_confidence_count"]);
+    populateRight();
 
     old_messages = document.getElementsByClassName("messages")[0].children;
     for (let i = 0; i < old_messages.length; i++) {
