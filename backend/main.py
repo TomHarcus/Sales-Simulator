@@ -5,6 +5,7 @@ import secrets
 from gemini import get_response
 from model import classify, tokenize
 from fastapi.middleware.cors import CORSMiddleware
+from collections import Counter
 
 
 app = FastAPI()
@@ -78,6 +79,7 @@ async def get_message(user_message: Message):
 
         if classification[1] < threshold:
             low_confidence = True
+            user_session.update_low_confidence()
        
 
 
@@ -89,17 +91,54 @@ async def get_message(user_message: Message):
     content = response["content"]
     user_session.update_history("model", content)
     user_session.update_objections(response["objection"])
+    user_session.update_classification_history(classification[0])
 
 
-    return {"content": content, "distribution": distribution, "classification": classification[0], "low_confidence": low_confidence, "objection": response["objection"], "interest_level": user_session.interest_level}
+    return {
+        "content": content, 
+        "distribution": distribution, 
+        "classification": classification[0], 
+        "low_confidence": low_confidence, 
+        "objection": response["objection"], 
+        "turn_number": user_session.counter,
+        "interest_level": user_session.interest_level
+        }
 
 
 @app.post("/end")
 async def end_session(user_session_id : SessionID):
     # remove users session from dictionary
     try:
+        user_session = sessions_dict[user_session_id.session_id]
+
+        description = user_session.description
+        personality = user_session.personality
+        difficulty = user_session.customer_type
+
+        interest_trajectory = user_session.interest_trajectory
+        final_interest_level = user_session.interest_trajectory[-1]
+
+        classification_history = user_session.classification_history
+        classification_counter = Counter(classification_history)
+        most_frequent_class = classification_counter.most_common(0)[0]
+
+        low_confidence_count = user_session.low_confidence_count
+
+        total_turns = user_session.counter
+
         del sessions_dict[user_session_id.session_id]
-        return "Session ended"
+
+        return {
+            "description": description,
+            "personality": personality,
+            "difficulty": difficulty,
+            "interest_trajectory": interest_trajectory,
+            "final_interest_level": final_interest_level,
+            "classification_history": classification_history,
+            "most_frequent_class": most_frequent_class,
+            "low_confidence_count": low_confidence_count,
+            "total_turns": total_turns
+        }
     
     except KeyError:
         raise HTTPException(status_code=404, detail="Session not found")

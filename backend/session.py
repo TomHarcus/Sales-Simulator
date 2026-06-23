@@ -17,6 +17,9 @@ class Session:
         self.customer_type = customer_type
         self.objections = []
         self.interest_level = interest_level
+        self.interest_trajectory = []
+        self.classification_history = []
+        self.low_confidence_count = 0
 
     def update_counter(self):
         self.counter += 1
@@ -27,6 +30,8 @@ class Session:
     def update_interest_level(self, new_value):
         if new_value >= 1 and new_value <= 5:
             self.interest_level = new_value
+
+            self.interest_trajectory.append(new_value)
     
     def update_history(self, role, parts):
         turn = types.Content(role=role, parts=[types.Part(text=parts)])
@@ -38,6 +43,12 @@ class Session:
     
     def update_objections(self, objection):
         self.objections.append(objection)
+
+    def update_classification_history(self, classification):
+        self.classification_history.append(classification)
+
+    def update_low_confidence(self):
+        self.low_confidence_count += 1
 
 
         

@@ -264,6 +264,19 @@ input[type=range] {
     margin-bottom: 8px;
 }
 
+.number_turns_label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 8px;
+}
+
+.number_turns {
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
 .info-label {
     font-size: 12px;
     color: var(--text-muted);

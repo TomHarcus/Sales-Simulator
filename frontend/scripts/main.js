@@ -92,7 +92,7 @@ const objection_map = {
     "price": "Price / budget",
     "timing": "Bad timing",
     "incumbent_vendor": "Has existing vendor",
-    "no_need": "No need is perceived",
+    "no_need": "Customer doesn't have a need",
     "no_authority": "Not decision maker",
     "trust": "Lack of trust",
     "null": "No current objection",
@@ -271,6 +271,9 @@ async function sendMessage(event) {
         current_objection[0].textContent = objection_map[customer_response["objection"]];
 
         updateInterestLevel(customer_response["interest_level"]);
+
+        let number_turns = document.getElementsByClassName("number_turns");
+        number_turns[0].textContent = customer_response["turn_number"];
         
         
 
