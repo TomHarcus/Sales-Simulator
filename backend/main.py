@@ -66,7 +66,7 @@ async def get_message(user_message: Message):
     low_confidence = False
     distribution = None
     classification = ("N/A", 0)
-    if user_session.get_counter() > 0:
+    if user_session.get_counter() > 0 and len(user_message.content) >= 20:
         model_input = tokenize(user_session.get_previous_message(), user_message.content)
         distribution = classify(model_input)
 
@@ -80,7 +80,7 @@ async def get_message(user_message: Message):
         if classification[1] < threshold:
             low_confidence = True
             user_session.update_low_confidence()
-       
+     
 
 
     response = get_response(user_session, user_message)
@@ -92,6 +92,18 @@ async def get_message(user_message: Message):
     user_session.update_history("model", content)
     user_session.update_objections(response["objection"])
     user_session.update_classification_history(classification[0])
+
+    if len(user_message.content) < 20:
+        return {
+            "content": content, 
+            "distribution": distribution, 
+            "classification": "N/A", 
+            "low_confidence": False, 
+            "objection": response["objection"], 
+            "turn_number": user_session.counter,
+            "interest_level": user_session.interest_level,
+            "message_length": len(user_message.content)
+        }
 
 
     return {

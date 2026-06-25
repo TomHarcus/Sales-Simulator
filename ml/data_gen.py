@@ -114,16 +114,16 @@ Generate one realistic sales conversation example where a salesperson demonstrat
 
 STRICT REQUIREMENTS:
 1. The salesperson response must unambiguously demonstrate {category} and no other category
-2. The context turns must create a situation where {category} is the natural response — not just 
+2. The context turns must create a situation where {category} is the natural response - not just 
    possible, but the behaviour the context is specifically setting up
 3. The response must be 2-3 sentences. No longer.
-4. Write like a real human on a sales call — use contractions, occasional filler words, 
+4. Write like a real human on a sales call - use contractions, occasional filler words, 
    incomplete thoughts. Not formal. Not an LLM.
 5. Do NOT make the category name or its markers explicit in the response
 6. The prospect messages should be direct and skeptical — not polite or verbose
 7. Use vocabulary natural to the {topic} industry
 
-OUTPUT FORMAT — return only valid JSON, no markdown, no preamble:
+OUTPUT FORMAT - return only valid JSON, no markdown, no preamble:
 {{
     "context_turns": ["prospect message 1", "prospect message 2"],
     "response": "salesperson response"
