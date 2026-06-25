@@ -28,7 +28,7 @@ class Session:
         return self.counter
 
     def update_interest_level(self, new_value):
-        if new_value >= 1 and new_value <= 5:
+        if new_value >= 0 and new_value <= 5:
             self.interest_level = new_value
 
             self.interest_trajectory.append(new_value)

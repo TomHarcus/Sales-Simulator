@@ -1,6 +1,7 @@
 // check for form submission
 document.getElementById("start_form").addEventListener("submit", validateStart);
 let user_session_id = null;
+let user_lost = false;
 
 function invalidInput(current_element) {
     current_element.classList.add("shake");
@@ -176,6 +177,13 @@ function updateDistribution(distribution, classification) {
 function updateInterestLevel(current_interest_level) {
     interest_level = document.getElementsByClassName("interest-dots")[0].children;
 
+    if (current_interest_level === 0) {
+        for (let i = 0; i < interest_level.length; i++) {
+            interest_level[i].classList.remove("active");
+            interest_level[i].style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--warning").trim();
+        }
+    }
+
     for (let i = 0; i < interest_level.length; i++) {
         if (i < current_interest_level) {
             interest_level[i].classList.add("active");
@@ -202,6 +210,11 @@ input.addEventListener("keypress", function(event) {
 // send message 
 async function sendMessage(event) {
     event.preventDefault();
+
+    if (user_lost) {
+        return;
+    }
+
     let user_message_el = document.getElementById("user_message");
     let user_message = document.getElementById("user_message").value;
   
@@ -264,6 +277,22 @@ async function sendMessage(event) {
             document.getElementsByClassName("warning")[0].remove();
         } catch {}
 
+        if (customer_response["interest_level"] === 0) {
+            user_lost = true;
+            let lost_warning = document.createElement("div");
+            lost_warning.classList.add("warning");
+            lost_warning.textContent = "Customer has hung up: You lose";
+            document.getElementsByClassName("information")[0].insertBefore(lost_warning, document.querySelector(".objection-label"));
+
+            document.getElementById("user_message").value = "";
+
+            document.getElementById("user_message").disabled = true;
+            document.getElementById("send_button").disabled = true;
+
+            let input_box = document.getElementById("user_message");
+            input_box.style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--warning").trim();
+        } 
+
         let classification = document.getElementsByClassName("info-value");
 
         classification[0].textContent = classification_map[customer_response["classification"]];
@@ -273,14 +302,14 @@ async function sendMessage(event) {
             updateDistribution(customer_response["distribution"], customer_response["classification"]);
         }
 
-        if (customer_response["low_confidence"] === true) {
+        if (customer_response["low_confidence"] === true && user_lost !== true) {
             let ood_warning = document.createElement("div");
             ood_warning.classList.add("warning");
             ood_warning.textContent = "Low confidence: input may be out of training distribution";
             document.getElementsByClassName("information")[0].insertBefore(ood_warning, document.querySelector(".objection-label"));
         }
 
-        if (customer_response["length_valid"] === false) {
+        if (customer_response["length_valid"] === false && user_lost !== true) {
             let length_warning = document.createElement("div");
             length_warning.classList.add("warning");
             length_warning.textContent = "Message length too short for reliable classification (Must be 20 characters or greater)";
@@ -290,7 +319,10 @@ async function sendMessage(event) {
         let current_objection = document.getElementsByClassName("current_objection");
         current_objection[0].textContent = objection_map[customer_response["objection"]];
 
+        
+        
         updateInterestLevel(customer_response["interest_level"]);
+        
 
         let number_turns = document.getElementsByClassName("number_turns");
         number_turns[0].textContent = customer_response["turn_number"];

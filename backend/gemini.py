@@ -37,9 +37,14 @@ def get_response(user_session, user_message):
     If current interest level is 4, you are interested and more likely to make the purchase.
     If current interest level is 5, you are very interested and about to make the purchase.
 
+    If you are now extremely disinterested or angry at the salesperson or anything relating to the context of the conversation and your current interest 
+    level is 1 then you can set interest level to 0 and simulate a hang up on the sales person. Construct the message response accordingly. Remember to act
+    how your personality type and customer_type are set. For example a personality type of easy going and customer_type of easy might be more lenient than
+    more difficult parameters.
+
     For your response, return it in JSON format. Your response JSON should include the content of your simulated response, the updated 
     interest level, and your objection. You decided what the interest level should be set to based on the interaction, make it as realistic as possible. the interest
-    level is bounded between 1 and 5.
+    level is bounded between 0 and 5.
 
     For the objection there are 6 labels:
 
