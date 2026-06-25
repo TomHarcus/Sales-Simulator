@@ -204,6 +204,7 @@ async function sendMessage(event) {
     event.preventDefault();
     let user_message_el = document.getElementById("user_message");
     let user_message = document.getElementById("user_message").value;
+  
 
     if (!user_message) {
         invalidInput(user_message_el);
@@ -225,7 +226,7 @@ async function sendMessage(event) {
     input_box.style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--warning").trim();
     
 
-    document.getElementsByClassName("ood_warning")[0].style.visibility="hidden";
+  
 
 
     const request = {
@@ -259,6 +260,10 @@ async function sendMessage(event) {
 
         document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
 
+        try {
+            document.getElementsByClassName("warning")[0].remove();
+        } catch {}
+
         let classification = document.getElementsByClassName("info-value");
 
         classification[0].textContent = classification_map[customer_response["classification"]];
@@ -269,7 +274,17 @@ async function sendMessage(event) {
         }
 
         if (customer_response["low_confidence"] === true) {
-            document.getElementsByClassName("ood_warning")[0].style.visibility="visible";
+            let ood_warning = document.createElement("div");
+            ood_warning.classList.add("warning");
+            ood_warning.textContent = "Low confidence: input may be out of training distribution";
+            document.getElementsByClassName("information")[0].insertBefore(ood_warning, document.querySelector(".objection-label"));
+        }
+
+        if (customer_response["length_valid"] === false) {
+            let length_warning = document.createElement("div");
+            length_warning.classList.add("warning");
+            length_warning.textContent = "Message length too short for reliable classification (Must be 20 characters or greater)";
+            document.getElementsByClassName("information")[0].insertBefore(length_warning, document.querySelector(".objection-label"));
         }
 
         let current_objection = document.getElementsByClassName("current_objection");
@@ -529,7 +544,6 @@ async function endSession(event) {
         old_label.remove();
     }
 
-    document.getElementsByClassName("ood_warning")[0].style.visibility="hidden";
     
 
     } catch (error) {

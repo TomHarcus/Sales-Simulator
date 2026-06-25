@@ -267,6 +267,7 @@ input[type=range] {
     border: 1px solid var(--text-muted);
     border-radius: 24px;
     margin-right: 8px;
+    min-width: 400px;
 }
 
 .classification_label {
@@ -303,9 +304,8 @@ input[type=range] {
     display: inline-block;
 }
 
-.ood_warning {
+.warning {
     color: var(--warning);
-    visibility: hidden;
     font-size: 12px;
 }
 

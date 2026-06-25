@@ -102,7 +102,7 @@ async def get_message(user_message: Message):
             "objection": response["objection"], 
             "turn_number": user_session.counter,
             "interest_level": user_session.interest_level,
-            "message_length": len(user_message.content)
+            "length_valid": False
         }
 
 
@@ -113,7 +113,8 @@ async def get_message(user_message: Message):
         "low_confidence": low_confidence, 
         "objection": response["objection"], 
         "turn_number": user_session.counter,
-        "interest_level": user_session.interest_level
+        "interest_level": user_session.interest_level,
+        "length_valid": True
         }
 
 
