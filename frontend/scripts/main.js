@@ -183,7 +183,7 @@ function updateDistribution(distribution, classification) {
 }
 
 function updateInterestLevel(current_interest_level) {
-    interest_level = document.getElementsByClassName("interest-dots")[0].children;
+    let interest_level = document.getElementsByClassName("interest-dots")[0].children;
 
     if (current_interest_level === 0) {
         for (let i = 0; i < interest_level.length; i++) {
@@ -450,7 +450,7 @@ function interestLineGraph(interest_trajectory) {
     title.textContent = "Interest over time";
     document.getElementsByClassName("finish_right")[0].appendChild(title);
 
-    points = [];
+    let points = [];
 
     for (let i = 0; i < interest_trajectory.length; i++) {
         points.push([i, interest_trajectory[i]]);
@@ -568,22 +568,6 @@ async function endSession(event) {
     populateLeft(backend_response["description"], backend_response["personality"], backend_response["difficulty"], backend_response["total_turns"], backend_response["final_interest_level"], backend_response["most_frequent_class"],backend_response["low_confidence_count"]);
     classificationBreakdown(backend_response["classification_history"], backend_response["total_turns"]);
     interestLineGraph(backend_response["interest_trajectory"]);
-
-    old_messages = document.getElementsByClassName("messages")[0].children;
-    for (let i = 0; i < old_messages.length; i++) {
-
-        old_messages[i].classList.remove("message");
-        old_messages[i].textContent="";
-    }
-
-    document.querySelectorAll(".progress_bar").forEach(p => p.remove());
-    document.querySelectorAll(".winning_bar").forEach(p => p.remove());
-    document.querySelectorAll(".span_distribution_label").forEach(p => p.remove());
-    let old_label = document.querySelector(".distribution_label");
-    if (old_label) {
-        old_label.remove();
-    }
-
     
 
     } catch (error) {
@@ -592,21 +576,51 @@ async function endSession(event) {
     console.log("session ended");
 }
 
+function resetContent() {
+    document.getElementsByClassName("messages")[0].innerHTML = "";
+
+    document.getElementsByClassName("info-value")[0].textContent = classification_map["N/A"];
+    document.getElementsByClassName("current_objection")[0].textContent = objection_map[null];
+    document.getElementsByClassName("number_turns")[0].textContent = 0;
+
+    document.querySelectorAll(".progress_bar").forEach(p => p.remove());
+    document.querySelectorAll(".winning_bar").forEach(p => p.remove());
+    document.querySelectorAll(".span_distribution_label").forEach(p => p.remove());
+    let old_label = document.querySelector(".distribution_label");
+    if (old_label) {
+        old_label.remove();
+    }
+    let interest_level = document.getElementsByClassName("interest-dots")[0].children;
+    for (let i = 0; i < interest_level.length; i++) {
+            interest_level[i].style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
+        }
+
+    const warning = document.querySelector(".warning");
+    if (warning) {
+        warning.remove();
+    }
+
+    document.getElementById("user_message").value = "";
+
+    document.getElementById("user_message").disabled = false;
+    document.getElementById("send_button").disabled = false;
+
+    let input_box = document.getElementById("user_message");
+    input_box.style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
+    
+    document.getElementsByClassName("finish_left")[0].innerHTML = "";
+    document.getElementsByClassName("finish_right")[0].innerHTML = "";
+}
+
 document.getElementById("restart_button").addEventListener("click", startNewSession);
 
 function startNewSession(event) {
     document.getElementsByClassName("finish_session")[0].style.display="none";
     document.getElementsByClassName("start_state")[0].style.display="flex";
     user_session_id = null;
+    user_lost = false;
 
-    let classification = document.getElementsByClassName("info-value");
-    classification[0].textContent = classification_map["N/A"];
-
-    document.getElementsByClassName("current_objection")[0].textContent = objection_map[null];
-    document.getElementsByClassName("number_turns")[0].textContent = 0;
-    
-    document.getElementsByClassName("finish_left")[0].innerHTML = "";
-    document.getElementsByClassName("finish_right")[0].innerHTML = "";
+    resetContent();
 }
 
 
