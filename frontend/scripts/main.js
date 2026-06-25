@@ -20,6 +20,7 @@ function invalidInput(current_element) {
 // start endpoint
 async function validateStart(event) {
     event.preventDefault();
+    let valid = true;
     
     // session parameters
     const session_description_el = document.getElementById("description");
@@ -31,16 +32,23 @@ async function validateStart(event) {
     const session_difficulty = document.getElementById("customer_type").value;
     const session_interest_level = document.getElementById("interest_level").value;
 
+
     if (!session_description) {
         console.log("no value");
         invalidInput(session_description_el);
-        return;
+        valid = false
     }
 
     if (!session_personality) {
         invalidInput(session_personality_el);
+        valid = false;
+    }
+
+    if (!valid) {
         return;
     }
+
+    
 
     // create request object to backend
     const request = {
@@ -462,7 +470,7 @@ function interestLineGraph(interest_trajectory) {
     
 
     const xScale = i => (i / (interest_trajectory.length - 1)) * svgWidth;
-    const yScale = v => svgHeight - ((v-1)/4) * svgHeight;
+    const yScale = v => svgHeight - (v/5) * svgHeight;
 
     const pointsString = points.map(([i,v]) => `${xScale(i)}, ${yScale(v)}`).join(" ");
 
