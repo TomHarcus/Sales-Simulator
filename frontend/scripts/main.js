@@ -1,3 +1,9 @@
+// get css colours
+const warning_colour = getComputedStyle(document.documentElement).getPropertyValue("--warning").trim();
+const text_colour = getComputedStyle(document.documentElement).getPropertyValue("--text").trim();
+const text_muted = getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
+const accent_colour = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+
 // check for form submission
 document.getElementById("start_form").addEventListener("submit", validateStart);
 let user_session_id = null;
@@ -5,11 +11,11 @@ let user_lost = false;
 
 function invalidInput(current_element) {
     current_element.classList.add("shake");
-    current_element.style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--warning").trim();
+    current_element.style.border = "1px solid " + warning_colour;
     setTimeout(() => {
         current_element.classList.remove("shake");
         if (current_element.isEqualNode(document.getElementById("user_message"))) {
-            current_element.style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
+            current_element.style.border = "1px solid " + text_muted;
         } else {
             current_element.style.border = "none";
         }
@@ -188,7 +194,7 @@ function updateInterestLevel(current_interest_level) {
     if (current_interest_level === 0) {
         for (let i = 0; i < interest_level.length; i++) {
             interest_level[i].classList.remove("active");
-            interest_level[i].style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--warning").trim();
+            interest_level[i].style.backgroundColor = warning_colour;
         }
     }
 
@@ -251,7 +257,7 @@ async function sendMessage(event) {
     document.getElementById("send_button").disabled = true;
 
     let input_box = document.getElementById("user_message");
-    input_box.style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--warning").trim();
+    input_box.style.border = "1px solid " + warning_colour;
     
 
   
@@ -284,7 +290,7 @@ async function sendMessage(event) {
         document.getElementById("user_message").disabled = false;
         document.getElementById("send_button").disabled = false;
 
-        document.getElementById("user_message").style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
+        document.getElementById("user_message").style.border = "1px solid " + text_muted;
 
         document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
 
@@ -305,7 +311,7 @@ async function sendMessage(event) {
             document.getElementById("send_button").disabled = true;
 
             let input_box = document.getElementById("user_message");
-            input_box.style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--warning").trim();
+            input_box.style.border = "1px solid " + warning_colour;
         } 
 
         let classification = document.getElementsByClassName("info-value");
@@ -486,7 +492,7 @@ function interestLineGraph(interest_trajectory) {
     yAxis.setAttribute("y1", 0);
     yAxis.setAttribute("x2", 0);
     yAxis.setAttribute("y2", svgHeight);
-    yAxis.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
+    yAxis.setAttribute("stroke", accent_colour);
     yAxis.setAttribute("stroke-width", "3");
 
     const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -494,7 +500,7 @@ function interestLineGraph(interest_trajectory) {
     xAxis.setAttribute("y1", svgHeight);
     xAxis.setAttribute("x2", svgWidth);
     xAxis.setAttribute("y2", svgHeight);
-    xAxis.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
+    xAxis.setAttribute("stroke", accent_colour);
     xAxis.setAttribute("stroke-width", "3");
 
     svg.appendChild(yAxis);
@@ -502,7 +508,7 @@ function interestLineGraph(interest_trajectory) {
 
     polyline.setAttribute("points", pointsString);
     polyline.setAttribute("fill", "none");
-    polyline.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
+    polyline.setAttribute("stroke", text_colour);
     polyline.setAttribute("stroke-width", "3");
 
     for (let i = 0; i < points.length; i++) {
@@ -510,7 +516,7 @@ function interestLineGraph(interest_trajectory) {
         circle.setAttribute("cx", xScale(points[i][0]));
         circle.setAttribute("cy", yScale(points[i][1]));
         circle.setAttribute("r", 4);
-        circle.setAttribute("fill", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
+        circle.setAttribute("fill", text_colour);
         svg.appendChild(circle);
     }
 
@@ -520,7 +526,7 @@ function interestLineGraph(interest_trajectory) {
     yLabel.setAttribute("transform", "rotate(-90)");
     yLabel.setAttribute("x", -svgHeight/2-24);
     yLabel.setAttribute("y", -8);
-    yLabel.setAttribute("fill", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
+    yLabel.setAttribute("fill", text_colour);
     yLabel.setAttribute("font-size", "12");
     yLabel.textContent = "Interest";
 
@@ -529,7 +535,7 @@ function interestLineGraph(interest_trajectory) {
     const xLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     xLabel.setAttribute("x", svgWidth/2-44);
     xLabel.setAttribute("y", svgHeight+16);
-    xLabel.setAttribute("fill", getComputedStyle(document.documentElement).getPropertyValue("--text").trim());
+    xLabel.setAttribute("fill", text_colour);
     xLabel.setAttribute("font-size", "12");
     xLabel.textContent = "Turns";
     
@@ -599,7 +605,7 @@ function resetContent() {
     }
     let interest_level = document.getElementsByClassName("interest-dots")[0].children;
     for (let i = 0; i < interest_level.length; i++) {
-            interest_level[i].style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
+            interest_level[i].style.backgroundColor = text_muted;
         }
 
     const warning = document.querySelector(".warning");
@@ -613,7 +619,7 @@ function resetContent() {
     document.getElementById("send_button").disabled = false;
 
     let input_box = document.getElementById("user_message");
-    input_box.style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
+    input_box.style.border = "1px solid " + text_muted;
     
     document.getElementsByClassName("finish_left")[0].innerHTML = "";
     document.getElementsByClassName("finish_right")[0].innerHTML = "";
