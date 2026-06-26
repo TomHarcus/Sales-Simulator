@@ -13,7 +13,7 @@ CATEGORIES = {
     "WEAK_CONCESSIVE": """The salesperson loses frame control. They use epistemic uncertainty markers 
 ("I guess", "probably", "I think", "um", "sort of", "maybe", "I suppose") and avoid 
 commitment, OR they offer a price reduction without the prospect explicitly demanding one. The rep 
-is retreating — from a claim, from a price, or from their own position. The behaviour should be 
+is retreating - from a claim, from a price, or from their own position. The behaviour should be 
 clear but not cartoonish.
 
 POSITIVE EXAMPLES of WEAK_CONCESSIVE:
@@ -24,7 +24,7 @@ POSITIVE EXAMPLES of WEAK_CONCESSIVE:
 - Rep combines both: "I'm fairly sure it should work fine, but honestly if the budget's the 
   problem I could maybe drop the fee a bit."
 
-NEGATIVE EXAMPLES — do NOT generate these for WEAK_CONCESSIVE:
+NEGATIVE EXAMPLES - do NOT generate these for WEAK_CONCESSIVE:
 - A rep who acknowledges uncertainty once but then holds their position (that's OBJECTION_HANDLING)
 - A rep who lists specs without committing (that's FEATURE_DUMPING)
 - A rep who drops price only after the prospect explicitly names a competing price (that's a 
@@ -43,29 +43,29 @@ POSITIVE EXAMPLES of FEATURE_DUMPING:
   algorithm, multi-tier asset class diversification, automated tax-loss harvesting, and a 
   dedicated mobile dashboard."
 
-NEGATIVE EXAMPLES — do NOT generate these for FEATURE_DUMPING:
+NEGATIVE EXAMPLES - do NOT generate these for FEATURE_DUMPING:
 - A rep who lists one or two specs that directly answer a specific technical question 
   (that's OBJECTION_HANDLING)
 - A rep who lists specs AND explicitly connects them to the prospect's stated pain 
   (that's OBJECTION_HANDLING)
-- A rep who hedges while listing specs (that's WEAK_CONCESSIVE — the retreat is the 
+- A rep who hedges while listing specs (that's WEAK_CONCESSIVE - the retreat is the 
   dominant behaviour)""",
 
     "OBJECTION_HANDLING": """The salesperson addresses a specific concern the prospect raised 
 with a direct, structured response. The mechanism or evidence provided is clearly chosen because 
-of what the prospect said — it would not make sense as a response to a different objection. 
+of what the prospect said - it would not make sense as a response to a different objection. 
 The rep holds their position while resolving the concern. Confidence is maintained throughout.
 
 POSITIVE EXAMPLES of OBJECTION_HANDLING:
 - Prospect worried about price hikes: "Our contracts include a legally binding price-lock for 
-  the full term — it's written into the SLA, not just a verbal commitment."
+  the full term - it's written into the SLA, not just a verbal commitment."
 - Prospect worried about migration downtime: "We run a parallel environment for the first two 
   weeks so your current system stays live until the new one is fully validated."
 - Prospect skeptical of reliability claims: "We publish our uptime logs directly to your portal 
-  in real time — you're not taking my word for it, you can see it yourself."
+  in real time - you're not taking my word for it, you can see it yourself."
 
-NEGATIVE EXAMPLES — do NOT generate these for OBJECTION_HANDLING:
-- A rep who addresses the concern but then offers a discount (that's WEAK_CONCESSIVE — the 
+NEGATIVE EXAMPLES - do NOT generate these for OBJECTION_HANDLING:
+- A rep who addresses the concern but then offers a discount (that's WEAK_CONCESSIVE - the 
   retreat overrides the handling)
 - A rep who lists multiple specs without tying any of them to the specific concern raised 
   (that's FEATURE_DUMPING)
@@ -85,7 +85,7 @@ POSITIVE EXAMPLES of ANCHORING:
 - "Look, the number is $450k for the full implementation. I'm putting that on the table now 
   so we're not dancing around it later."
 
-NEGATIVE EXAMPLES — do NOT generate these for ANCHORING:
+NEGATIVE EXAMPLES - do NOT generate these for ANCHORING:
 - A rep who states a price and then immediately offers to reduce it (that's WEAK_CONCESSIVE)
 - A rep who states a price in the middle of a long spec list (that's FEATURE_DUMPING)
 - A rep who states a price only after the prospect explicitly asks for it without any 
@@ -120,7 +120,7 @@ STRICT REQUIREMENTS:
 4. Write like a real human on a sales call - use contractions, occasional filler words, 
    incomplete thoughts. Not formal. Not an LLM.
 5. Do NOT make the category name or its markers explicit in the response
-6. The prospect messages should be direct and skeptical — not polite or verbose
+6. The prospect messages should be direct and skeptical - not polite or verbose
 7. Use vocabulary natural to the {topic} industry
 
 OUTPUT FORMAT - return only valid JSON, no markdown, no preamble:

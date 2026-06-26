@@ -60,7 +60,6 @@ async function validateStart(event) {
 
     // check for invalid input in session parameter boxes
     if (!session_description.value) {
-        console.log("no value");
         invalidInput(session_description);
         valid = false
     }
@@ -101,7 +100,6 @@ async function validateStart(event) {
 
         // store returned session id and print
         user_session_id = await response.json();
-        console.log(user_session_id);
 
         // once collected session id go to active session state
         document.getElementsByClassName("start_wrapper")[0].style.display="none";
@@ -256,7 +254,6 @@ async function sendMessage(event) {
         return;
     }
 
-    console.log(user_message.value);
 
     // add message to conversation box
     addMessage(user_message.value, "user");
@@ -299,7 +296,6 @@ async function sendMessage(event) {
         let customer_response = await response.json();
         removeTypingIndicator();
         addMessage(customer_response["content"], "prospect");
-        console.log(customer_response);
 
         
         // re-enable message box
@@ -600,7 +596,6 @@ async function endSession(event) {
     }
 
     let backend_response = await response.json();
-    console.log(backend_response);
 
     // switch to summary screen
     document.getElementsByClassName("active_session")[0].style.display="none";
@@ -615,7 +610,6 @@ async function endSession(event) {
     } catch (error) {
         console.log(error.message);
     }
-    console.log("session ended");
 }
 
 // reset all data to default
