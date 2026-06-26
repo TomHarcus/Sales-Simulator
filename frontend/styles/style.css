@@ -38,6 +38,16 @@ label {
     
 }
 
+.start_title {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 48px;
+    font-weight: bold;
+   
+}
+
 .start_state {
     background-color: var(--panel);
     display: flex;

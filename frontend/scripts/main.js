@@ -104,7 +104,7 @@ async function validateStart(event) {
         console.log(user_session_id);
 
         // once collected session id go to active session state
-        document.getElementsByClassName("start_state")[0].style.display="none";
+        document.getElementsByClassName("start_wrapper")[0].style.display="none";
         document.getElementsByClassName("active_session")[0].style.display="flex";
 
         updateInterestLevel(session_interest_level.value);
@@ -666,7 +666,7 @@ document.getElementById("restart_button").addEventListener("click", startNewSess
 function startNewSession(event) {
     // switch back to set parameter screen
     document.getElementsByClassName("finish_session")[0].style.display="none";
-    document.getElementsByClassName("start_state")[0].style.display="flex";
+    document.getElementsByClassName("start_wrapper")[0].style.display="flex";
 
     // reset session id and if user lost
     user_session_id = null;
