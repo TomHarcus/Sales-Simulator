@@ -18,7 +18,7 @@
         <div class="start_state">
             
             <form id="start_form">
-                <label for="description">Project Description:</label>
+                <label for="description">Context description:</label>
                 <input type="text" id="description" name="description" placeholder="Description..."><br><br>
 
                 <label for="personality">Personality:</label>
@@ -32,7 +32,11 @@
                 </select><br><br>
 
                 <label for="interest_level">Interest level:</label>
-                <input type="range" id="interest_level" name="interest_level" min="1" max="5"><br><br>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="range" id="interest_level" name="interest_level" min="1" max="5" 
+                    oninput="document.getElementById('interest_val').textContent = this.value">
+                <span id="interest_val">3</span>
+                </div>
                 
                 <input type="submit" value="Start Simulator">
             </form>

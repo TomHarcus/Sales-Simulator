@@ -81,7 +81,13 @@ select {
 input[type=range] {
     width: 100%;
     accent-color: var(--accent);
+    margin-bottom: 12px;
 }
+
+#interest_val {
+    margin-bottom: 12px;
+}
+
 
 
 .start_state input[type=submit] {
