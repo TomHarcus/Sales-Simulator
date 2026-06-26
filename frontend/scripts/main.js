@@ -610,6 +610,12 @@ function resetContent() {
     
     document.getElementsByClassName("finish_left")[0].innerHTML = "";
     document.getElementsByClassName("finish_right")[0].innerHTML = "";
+
+    let session_description = document.getElementById("description");
+    session_description.value = "";
+
+    let session_personality = document.getElementById("personality");
+    session_personality.value = "";
 }
 
 document.getElementById("restart_button").addEventListener("click", startNewSession);
