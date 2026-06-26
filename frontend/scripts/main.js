@@ -9,6 +9,7 @@ document.getElementById("start_form").addEventListener("submit", validateStart);
 let user_session_id = null;
 let user_lost = false;
 
+// check for invalid input in the input fields => shake + warning colour for clarity
 function invalidInput(current_element) {
     current_element.classList.add("shake");
     current_element.style.border = "1px solid " + warning_colour;
@@ -29,24 +30,20 @@ async function validateStart(event) {
     let valid = true;
     
     // session parameters
-    const session_description_el = document.getElementById("description");
-    const session_description = document.getElementById("description").value;
+    const session_description = document.getElementById("description");
+    const session_personality = document.getElementById("personality");
+    const session_difficulty = document.getElementById("customer_type");
+    const session_interest_level = document.getElementById("interest_level");
 
-    const session_personality_el = document.getElementById("personality");
-    const session_personality = document.getElementById("personality").value;
-
-    const session_difficulty = document.getElementById("customer_type").value;
-    const session_interest_level = document.getElementById("interest_level").value;
-
-
-    if (!session_description) {
+    // check for invalid input in session parameter boxes
+    if (!session_description.value) {
         console.log("no value");
-        invalidInput(session_description_el);
+        invalidInput(session_description);
         valid = false
     }
 
-    if (!session_personality) {
-        invalidInput(session_personality_el);
+    if (!session_personality.value) {
+        invalidInput(session_personality);
         valid = false;
     }
 
@@ -54,14 +51,12 @@ async function validateStart(event) {
         return;
     }
 
-    
-
     // create request object to backend
     const request = {
-        description: session_description,
-        personality: session_personality,
-        customer_type: session_difficulty,
-        interest_level: parseInt(session_interest_level)
+        description: session_description.value,
+        personality: session_personality.value,
+        customer_type: session_difficulty.value,
+        interest_level: parseInt(session_interest_level.value)
     };
 
     // start endpoint
@@ -89,9 +84,7 @@ async function validateStart(event) {
         document.getElementsByClassName("start_state")[0].style.display="none";
         document.getElementsByClassName("active_session")[0].style.display="flex";
 
-        
-
-        updateInterestLevel(session_interest_level);
+        updateInterestLevel(session_interest_level.value);
 
     } catch (error) {
         console.log(error.message);
