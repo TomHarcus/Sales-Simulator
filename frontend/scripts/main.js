@@ -213,6 +213,13 @@ input.addEventListener("keypress", function(event) {
     }
 })
 
+document.addEventListener('keydown', (e) => {
+    if (e.key === "/" && document.activeElement !== input) {
+        e.preventDefault();
+        input.focus();
+    }
+});
+
 
 
 // send message 
@@ -227,7 +234,7 @@ async function sendMessage(event) {
     let user_message = document.getElementById("user_message").value;
   
 
-    if (!user_message) {
+    if (!user_message.trim()) {
         invalidInput(user_message_el);
         return;
     }
@@ -276,7 +283,7 @@ async function sendMessage(event) {
 
         document.getElementById("user_message").disabled = false;
         document.getElementById("send_button").disabled = false;
-        //document.getElementById("user_message").style.removeProperty("border-color");
+
         document.getElementById("user_message").style.border = "1px solid " + getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
 
         document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
