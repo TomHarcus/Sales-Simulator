@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from session import Session, Customer_Type
 import secrets
@@ -6,9 +6,16 @@ from gemini import get_response
 from model import classify, tokenize
 from fastapi.middleware.cors import CORSMiddleware
 from collections import Counter
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
+
+limiter = Limiter(key_func=lambda request: request.client.host)
 
 app = FastAPI()
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 origins = [
     "http://localhost:5500"
@@ -55,7 +62,8 @@ async def start_session(user_session: UserSession):
 
 # message endpoint
 @app.post("/message")
-async def get_message(user_message: Message):
+@limiter.limit("30/minute")
+async def get_message(request: Request, user_message: Message):
     # check if session exists
     if user_message.session_id in sessions_dict:
         user_session = sessions_dict[user_message.session_id]
