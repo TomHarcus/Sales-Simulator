@@ -121,3 +121,17 @@ cd frontend
 python3 -m http.server 5500
 ```
 Then open `http://localhost:5500` in your browser.
+
+## Resources
+
+[HuggingFace Model](https://huggingface.co/TomHarcus/sales-behaviour-classifier)
+
+[HuggingFace Dataset](https://huggingface.co/datasets/TomHarcus/sales-behaviour-classifier-dataset)
+
+## Limitations
+
+Agent B was trained on synthetic data and may misclassify real user inputs that differ from the training distribution
+
+Sessions are stored in memory and will be lost when the server restarts
+
+No authentication, the app is open to anyone with the URL
