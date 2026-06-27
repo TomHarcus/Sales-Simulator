@@ -1,8 +1,8 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
-model = AutoModelForSequenceClassification.from_pretrained("ml/checkpoints")
-tokenizer = AutoTokenizer.from_pretrained("ml/checkpoints")
+model = AutoModelForSequenceClassification.from_pretrained("TomHarcus/sales-behaviour-classifier")
+tokenizer = AutoTokenizer.from_pretrained("TomHarcus/sales-behaviour-classifier")
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 model.to(device)

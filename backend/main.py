@@ -18,7 +18,9 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 origins = [
-    "http://localhost:5500"
+    "http://localhost:5500",
+    "https://salesim.app",
+    "https://www.salesim.app"
 ]
 
 app.add_middleware(
